@@ -8,7 +8,7 @@ use App\Http\Controllers\Sms\QueueController as Queue;
 use App\Http\Requests;  
 use Response;
 use Redis;
-
+use Curl;
 
 use App\Model\Sms\Inbound;
 
@@ -38,20 +38,22 @@ class IncomingController extends Controller
                 'sms_type' => 1,
                 'message' => $responseMessage,
                 'delivery' => 0,
-                'time_prepared' => date('Y-m-d H:i:s')
+                'time_prepared' => date('Y-m-d H:i:s'),
+                'request_id' => $request['request_id']
             ];
         } else {
             $referenceID = strtoupper("DESC". substr(md5(uniqid(rand(), true)), 10, 17)) . time();
             $validMessage = CannedResponse::where('response_type', 1)->first();
             $responseMessage = str_replace('{#cluster}', $validateCluster->name, $validMessage['message']);
             $dataQueue = [
-                'cluster_id' => 0,
+                'cluster_id' => $validateCluster->id,
                 'reference_id' => $referenceID,
                 'number'=> $request['mobile_number'],
                 'sms_type' => 1,
                 'message' => $responseMessage,
                 'delivery' => 0,
-                'time_prepared' => date('Y-m-d H:i:s')
+                'time_prepared' => date('Y-m-d H:i:s'),
+                'request_id' => $request['request_id']
             ];
             unset($explodedMessage[0]);
             $inboundMessage = implode(" ", $explodedMessage);
@@ -66,11 +68,19 @@ class IncomingController extends Controller
             ];    
             
             Inbound::insert($data);
-            
+            Curl::to(url("api/modules/ticket"))
+            ->withData(["reference_id" => $data['reference_id'], "user_id" => 1, "cluster_id" => $validateCluster->id, "ticket_status" => 0])
+            ->post();
+        
         $redis = Redis::connection();
         $redis->publish('notification.' . $validateCluster->id, $referenceID);            
         }
         
         Queue::queue($dataQueue);
+    }
+    
+    public function find($id)
+    {
+        return Inbound::where('reference_id', $id)->first();
     }
 }
