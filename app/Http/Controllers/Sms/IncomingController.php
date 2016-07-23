@@ -38,7 +38,6 @@ class IncomingController extends Controller
                 'number'=> $request['mobile_number'],
                 'sms_type' => 1,
                 'message' => $responseMessage,
-                'delivery' => 0,
                 'time_prepared' => date('Y-m-d H:i:s'),
                 'request_id' => $request['request_id']
             ];
@@ -52,7 +51,6 @@ class IncomingController extends Controller
                 'number'=> $request['mobile_number'],
                 'sms_type' => 1,
                 'message' => $responseMessage,
-                'delivery' => 0,
                 'time_prepared' => date('Y-m-d H:i:s'),
                 'request_id' => $request['request_id']
             ];
