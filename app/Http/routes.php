@@ -33,7 +33,7 @@ Route::group(['prefix' => 'api/sms', 'namespace' => 'Sms'], function() {
 	});
 	Route::group(['prefix' => 'outbound'], function(){
 	});
-	Route::group(['prefix' => 'status'], function(){
+	Route::group(['prefix' => 'notify'], function(){
 		Route::post('', 'StatusController@status');
 		Route::post('manual', 'StatusController@manual');
 	});

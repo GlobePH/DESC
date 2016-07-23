@@ -20,6 +20,7 @@ class IncomingController extends Controller
 {
     public function inbound(Request $request)
     {
+        file_put_contents(base_path('logs/sms/inbound/').'inbound_'.date('Ymd').'.log', '['.date('Y-m-d H:i:s').']'. json_encode($request->all()) . "\n" , FILE_APPEND);
         $explodedMessage = explode(' ', $request['message']);
         $validateCluster = Cluster::where('cluster_code', strtoupper($explodedMessage[0]))->first();
         if(empty($validateCluster))

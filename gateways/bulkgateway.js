@@ -4,31 +4,32 @@ var mysql = require('mysql');
 var moment = require('moment');
 var log4js = require('log4js');
 log4js.loadAppender('file');
-log4js.addAppender(log4js.appenders.file('../logs/bulk_gateway_'+moment().format('YYYYMMDD')+'.log'), 'DESC');
+log4js.addAppender(log4js.appenders.file('../logs/bulk/bulk_gateway_'+moment().format('YYYYMMDD')+'.log'), 'DESC_BULK');
 
-var logger = log4js.getLogger('DESC');
+var logger = log4js.getLogger('DESC_BULK');
 logger.setLevel('trace');
 
 var connection = mysql.createConnection({
   host     : 'db4free.net',
   user     : 'desc_admin',
   password : 'desc_admin123',
-  database : 'descteamoverdue'
+  database : 'descteamoverdue',
+  connectionLimit: 1
 });
 
 var sendUrl = 'https://post.chikka.com/smsapi/request';
 var statusUrl = 'https://descdev-dyleenwilard.c9users.io/desc/public/api/sms/status/manual';
 
-while(process.pid != -1){
-    logger.trace('Opening Database Connection');
-    
-    connection.connect();
-    
-    var test = connection.query('SELECT * FROM queue WHERE delivery = 0 AND sms_type = 1 LIMIT ' + process.argv[2], function(err, rows, fields) {
+logger.trace('Opening Database Connection');
+connection.connect();
+
+setInterval(function(){
+    connection.query('SELECT * FROM queue WHERE sms_type = 3 LIMIT ' + process.argv[2], function(err, rows, fields) {
         if (!err)
         {
             if(rows.length > 0){
-                logger.trace('Getting '+row.length+' Transactions');
+                logger.trace('Start Process');
+                logger.trace('Getting '+rows.length+' Transactions');
                 for(var row in rows)
                 {
                     logger.trace('Cluster ID: ' + rows[row].cluster_id);
@@ -42,9 +43,9 @@ while(process.pid != -1){
                         message_id: rows[row].reference_id,
                         message: rows[row].message,
                         client_id: 'd5a4869a3a862984ea79f62c28edb75e655ed7977555760404b30b111a21f77b',
-                        // secret_key: 'bca2d3600032075d32af6ce3a3a54a8c0157a010bdf15008ed5ec7369ee1e010'
+                        secret_key: 'bca2d3600032075d32af6ce3a3a54a8c0157a010bdf15008ed5ec7369ee1e010'
                     };
-                    logger.trace('Sending transaction to ' + url);
+                    logger.trace('Sending transaction to ' + sendUrl);
                     request.post({url: sendUrl, form: postData}, function(err,httpResponse,body)
                     {
                         if(!err){
@@ -61,8 +62,9 @@ while(process.pid != -1){
                                 };
                                 logger.trace('Manually Saving response');
                                 request.post({url: statusUrl, form: outboundStatusData}, function(err,httpResponse,body){});
+                            } else {
+                                logger.trace('SUCCESS: '+parsedBody.status+':'+parsedBody.message);
                             }
-                            logger.trace('SUCCESS: '+parsedBody.status+':'+parsedBody.message);
                         } else {
                             console.log(err);
                         } 
@@ -79,14 +81,14 @@ while(process.pid != -1){
                     };
                     connection.query('INSERT INTO outbound SET ?', outboundData, function(err, result) {});
                     connection.query("DELETE FROM queue WHERE reference_id = '" + rows[row].reference_id + "'", function(err, result) {});
+                    logger.trace('End Process');    
                 }
             } else {
                 logger.trace('...');
             }
-            logger.trace('Closing Database Connection');
-            connection.end();
         } else {
             console.log('Error while performing Query.');
         }    
     });
-}
+}, 2000);
+    

@@ -4,9 +4,9 @@ var mysql = require('mysql');
 var moment = require('moment');
 var log4js = require('log4js');
 log4js.loadAppender('file');
-log4js.addAppender(log4js.appenders.file('../logs/rt/rt_gateway_'+moment().format('YYYYMMDD')+'.log'), 'DESC_RT');
+log4js.addAppender(log4js.appenders.file('../logs/priority/priority_gateway_'+moment().format('YYYYMMDD')+'.log'), 'DESC_PRIORITY');
 
-var logger = log4js.getLogger('DESC_RT');
+var logger = log4js.getLogger('DESC_PRIORITY');
 logger.setLevel('trace');
 
 var connection = mysql.createConnection({
@@ -24,7 +24,7 @@ logger.trace('Opening Database Connection');
 connection.connect();
 
 setInterval(function(){
-    connection.query('SELECT * FROM queue WHERE sms_type = 1 LIMIT ' + process.argv[2], function(err, rows, fields) {
+    connection.query('SELECT * FROM queue WHERE sms_type = 2 LIMIT ' + process.argv[2], function(err, rows, fields) {
         if (!err)
         {
             if(rows.length > 0){
@@ -37,12 +37,10 @@ setInterval(function(){
                     logger.trace('Mobile Number: ' + rows[row].number);
                     logger.trace('Message: ' + rows[row].message);
                     var postData = {
-                        message_type: 'REPLY',
+                        message_type: 'SEND',
                         mobile_number: rows[row].number,
-                        request_id: rows[row].request_id,
                         shortcode: '292908435',
                         message_id: rows[row].reference_id,
-                        request_cost: 'FREE',
                         message: rows[row].message,
                         client_id: 'd5a4869a3a862984ea79f62c28edb75e655ed7977555760404b30b111a21f77b',
                         secret_key: 'bca2d3600032075d32af6ce3a3a54a8c0157a010bdf15008ed5ec7369ee1e010'
