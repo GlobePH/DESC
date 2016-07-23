@@ -53,6 +53,7 @@ class AdvisoryController extends Controller
         $this->advisory->cluster_id = $request->get('cluster_id');
         $this->advisory->name       = $request->get('name');
         $this->advisory->summary    = $request->get('summary');
+        $this->advisory->content    = $request->get('content');
         $this->advisory->status     = $request->get('status');
         if ($this->advisory->save()) {
             $return = [
@@ -107,6 +108,7 @@ class AdvisoryController extends Controller
             $this->advisory->cluster_id = $request->get('cluster_id');
             $this->advisory->name       = $request->get('name');
             $this->advisory->summary    = $request->get('summary');
+            $this->advisory->content    = $request->get('content');
             $this->advisory->status     = $request->get('status');
             if ($this->advisory->save()) {
                 $return = [

@@ -20,4 +20,6 @@ Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 	Route::resource('cluster', 'ClusterController');
 	Route::resource('contact-number', 'ContactNumberController');
 	Route::resource('contact-group', 'ContactNumberGroupController');
+	Route::resource('ticket', 'TicketController');
+	Route::resource('ticket-location', 'TicketLocationController');
 });

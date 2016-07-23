@@ -6,9 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
+use Response;
+
+use App\Model\Core\TicketLocation;
 
 class TicketLocationController extends Controller
 {
+
+    /**
+     * 
+     * @var Collection/Object
+     */
+    private $ticket_location;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +26,8 @@ class TicketLocationController extends Controller
      */
     public function index()
     {
-        //
+        $this->ticket_location = TicketLocation::all();
+        return Response::json($this->ticket_location, 200);
     }
 
     /**
@@ -37,7 +48,24 @@ class TicketLocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->ticket_location = new TicketLocation;
+        $this->ticket_location->ticket_id   = $request->get('ticket_id');
+        $this->ticket_location->latitude    = $request->get('latitude');
+        $this->ticket_location->longitude   = $request->get('longitude');
+        $this->ticket_location->location_details = $request->get('location_details');
+        if ($this->ticket_location->save()) {
+            $return = [
+                'status'    => 'Success',
+                'message'   => 'Succesfully Created'
+            ];
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Error in saving'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -48,7 +76,16 @@ class TicketLocationController extends Controller
      */
     public function show($id)
     {
-        //
+        if ($this->ticket_location = TicketLocation::find($id)) {
+            $return = $this->ticket_location;
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -71,7 +108,31 @@ class TicketLocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($this->ticket_location = TicketLocation::find($id)) {
+            $this->ticket_location->ticket_id   = $request->get('ticket_id');
+            $this->ticket_location->latitude    = $request->get('latitude');
+            $this->ticket_location->longitude   = $request->get('longitude');
+            $this->ticket_location->location_details = $request->get('location_details');
+            if ($this->ticket_location->save()) {
+                $return = [
+                    'status'    => 'Success',
+                    'message'   => 'Succesfully updated'
+                ];
+            }
+            else {
+                $return = [
+                    'status'    => 'Error',
+                    'message'   => 'Error in updating'
+                ];
+            }
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -82,6 +143,19 @@ class TicketLocationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (TicketLocation::destroy($id)) {
+            $return = [
+                'status'    => 'Success',
+                'message'   => 'Successfully deleted',
+                'id'        => $id
+            ];  
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 }

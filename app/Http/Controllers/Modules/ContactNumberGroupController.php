@@ -48,7 +48,22 @@ class ContactNumberGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->group = new ContactNumberGroup;
+        $this->group->group_name    = $request->get('name');
+        if ($this->group->save()) {
+            $return = [
+                'status'    => 'Success',
+                'message'   => 'Successfully Created',
+                'id'        => $this->group->id
+            ];
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Error in saving'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -59,7 +74,16 @@ class ContactNumberGroupController extends Controller
      */
     public function show($id)
     {
-        //
+        if ($this->group = ContactNumberGroup::find($id)) {
+            $return = $this->group;
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($this->group, 200);
     }
 
     /**
@@ -82,7 +106,29 @@ class ContactNumberGroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($this->group = ContactNumberGroup::find($id)) {
+            $this->group->group_name = $request->get('name');
+            if ($this->group->save()) {
+                $return = [
+                    'status'    => 'Success',
+                    'message'   => 'Successfully Updated',
+                    'id'        => $this->group->id
+                ];
+            }
+            else {
+                $return = [
+                    'status'    => 'Error',
+                    'message'   => 'Error in updating'
+                ];
+            }
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Error in updating'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -93,6 +139,19 @@ class ContactNumberGroupController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (ContactNumberGroup::destroy($id)) {
+            $return = [
+                'status'    => 'Success',
+                'message'   => 'Successfully deleted!',
+                'id'        =>  $id
+            ];
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 }
