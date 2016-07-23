@@ -23,3 +23,9 @@ Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 	Route::resource('ticket', 'TicketController');
 	Route::resource('ticket-location', 'TicketLocationController');
 });
+
+Route::group(['prefix' => 'api/sms', 'namespace' => 'Sms'], function() {
+	Route::group(['prefix' => 'inbound'], function(){
+		Route::post('', 'IncomingController@inbound');			
+	});
+});

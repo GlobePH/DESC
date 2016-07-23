@@ -20,6 +20,7 @@ class CreateQueueTable extends Migration
             $table->string('number', 12);
             $table->string('message', 480);
             $table->integer('delivery');
+            $table->string('request_id', 480);
             $table->timestamp('time_prepared');
         });
 
