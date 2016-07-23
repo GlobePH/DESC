@@ -65,7 +65,7 @@ class ClusterController extends Controller
                 'message'   => 'Error in saving'
             ];
         }
-        return Response::json($response, 200);
+        return Response::json($return, 200);
     }
 
     /**
@@ -76,7 +76,16 @@ class ClusterController extends Controller
      */
     public function show($id)
     {
-        //
+        if ($this->cluster = Cluster::find($id)) {
+            $return = $this->cluster;
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found!'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -99,7 +108,31 @@ class ClusterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($this->cluster = Cluster::find($id)) {
+            $this->cluster->name            = $request->get('name');
+            $this->cluster->description     = $request->get('description');
+            $this->cluster->cluster_code    = $request->get('cluster_code');
+            if ($this->cluster->save()) {
+                $return = [
+                    'status'    => 'Success',
+                    'message'   => 'Successfully updated!',
+                    'id'        => $this->cluster->id
+                ];
+            }
+            else {
+                $return = [
+                    'status'    => 'Error',
+                    'message'   => 'Error in update'
+                ];
+            }
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found!'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -110,6 +143,19 @@ class ClusterController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Cluster::destroy($id)) {
+            $return = [
+                'status'    => 'Success',
+                'message'   => 'Successfully Deleted!',
+                'id'        => $id
+            ];
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 }

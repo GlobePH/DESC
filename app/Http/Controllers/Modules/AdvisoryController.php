@@ -149,7 +149,7 @@ class AdvisoryController extends Controller
         else {
             $return = [
                 'status'    => 'Error',
-                'message'   => 'Error in deleting'
+                'message'   => 'Id not found'
             ];
         }
         return Response::json($return, 200);
