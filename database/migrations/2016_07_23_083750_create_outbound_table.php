@@ -19,6 +19,7 @@ class CreateOutboundTable extends Migration
             $table->integer('sms_type');
             $table->string('number', 12);
             $table->string('message', 480);
+            $table->string('request_id', 480);
             $table->timestamp('time_prepared');
             $table->timestamp('time_delivered');
         });

@@ -25,3 +25,9 @@ Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 	Route::resource('user', 'UserController');
 	Route::resource('user-detail', 'UserDetailController');
 });
+
+Route::group(['prefix' => 'api/sms', 'namespace' => 'Sms'], function() {
+	Route::group(['prefix' => 'inbound'], function(){
+		Route::post('', 'IncomingController@inbound');			
+	});
+});
