@@ -26,7 +26,7 @@ class ClusterController extends Controller
      */
     public function index()
     {
-        $this->cluster = Cluster::all();
+        $this->cluster = Cluster::with(['advisory', 'contactNumber', 'ticket'])->get();
         return Response::json($this->cluster, 200);
     }
 
@@ -51,7 +51,7 @@ class ClusterController extends Controller
         $this->cluster = new Cluster;
         $this->cluster->name            = $request->get('name');
         $this->cluster->description     = $request->get('description');
-        $this->cluster->cluster_code    = $request->get('cluster_code');
+        $this->cluster->cluster_code    = strtoupper($request->get('cluster_code'));
         if ($this->cluster->save()) {
             $return = [
                 'status'    => 'Success',
@@ -76,7 +76,7 @@ class ClusterController extends Controller
      */
     public function show($id)
     {
-        if ($this->cluster = Cluster::find($id)) {
+        if ($this->cluster = Cluster::with(['advisory', 'contactNumber', 'ticket'])->find($id)) {
             $return = $this->cluster;
         }
         else {
@@ -111,7 +111,7 @@ class ClusterController extends Controller
         if ($this->cluster = Cluster::find($id)) {
             $this->cluster->name            = $request->get('name');
             $this->cluster->description     = $request->get('description');
-            $this->cluster->cluster_code    = $request->get('cluster_code');
+            $this->cluster->cluster_code    = strtoupper($request->get('cluster_code'));
             if ($this->cluster->save()) {
                 $return = [
                     'status'    => 'Success',

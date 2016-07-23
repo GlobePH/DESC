@@ -23,4 +23,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Define relationship with single tbl.user_details record
+     * @return Collection
+     */
+    public function userDetail()
+    {
+        return $this->hasOne('App\Model\Core\userDetail', 'user_id', 'id');
+    }
 }

@@ -8,16 +8,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Response;
 
-use App\Model\Core\Advisory;
+use App\Model\Core\UserDetail;
 
-class AdvisoryController extends Controller
+class UserDetailController extends Controller
 {
 
     /**
      * 
-     * @var Object/Collection
+     * @var Collection/Object
      */
-    private $advisory;
+    private $detail;
 
     /**
      * Display a listing of the resource.
@@ -26,8 +26,8 @@ class AdvisoryController extends Controller
      */
     public function index()
     {
-        $this->advisory = Advisory::with(['cluster'])->get();
-        return Response::json($this->advisory, 200);
+        $this->detail = UserDetail::all();
+        return Response::json($this->detail, 200);
     }
 
     /**
@@ -48,18 +48,20 @@ class AdvisoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->advisory = new Advisory;
-        $this->advisory->user_id    = $request->get('user_id');
-        $this->advisory->cluster_id = $request->get('cluster_id');
-        $this->advisory->name       = $request->get('name');
-        $this->advisory->summary    = $request->get('summary');
-        $this->advisory->content    = $request->get('content');
-        $this->advisory->status     = $request->get('status');
-        if ($this->advisory->save()) {
+        $this->detail = new UserDetail;
+        $this->detail->user_id      = $request->get('user_id');
+        $this->detail->first_name   = ucwords($request->get('first_name'));
+        $this->detail->last_name    = ucwords($request->get('last_name'));
+        $this->detail->full_name    = ucfirst($request->get('first_name')).' '.ucfirst($request->get('last_name'));
+        $this->detail->avatar       = $request->get('avatar');
+        $this->detail->address      = $request->get('address');
+        $this->detail->province     = $request->get('province');
+        $this->detail->city         = $request->get('city');
+        if ($this->detail->save()) {
             $return = [
                 'status'    => 'Success',
-                'message'   => 'Successfully saved!',
-                'id'        => $this->advisory->id
+                'message'   => 'Successfully created',
+                'id'        => $this->detail->id
             ];
         }
         else {
@@ -79,8 +81,16 @@ class AdvisoryController extends Controller
      */
     public function show($id)
     {
-        $this->advisory = Advisory::find($id);
-        return Response::json($this->advisory, 200);
+        if ($this->detail = UserDetail::find($id)) {
+            $return = $this->detail;
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -103,18 +113,19 @@ class AdvisoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->advisory = Advisory::find($id)) {
-            $this->advisory->user_id    = $request->get('user_id');
-            $this->advisory->cluster_id = $request->get('cluster_id');
-            $this->advisory->name       = $request->get('name');
-            $this->advisory->summary    = $request->get('summary');
-            $this->advisory->content    = $request->get('content');
-            $this->advisory->status     = $request->get('status');
-            if ($this->advisory->save()) {
+        if ($this->detail = UserDetail::find($id)) {
+            $this->detail->first_name   = ucwords($request->get('first_name'));
+            $this->detail->last_name    = ucwords($request->get('last_name'));
+            $this->detail->full_name    = ucfirst($request->get('first_name')).' '.ucfirst($request->get('last_name'));
+            $this->detail->avatar   = $request->get('avatar');
+            $this->detail->address  = $request->get('address');
+            $this->detail->province = $request->get('province');
+            $this->detail->city     = $request->get('city');
+            if ($this->detail->save()) {
                 $return = [
                     'status'    => 'Success',
-                    'message'   => 'Successfully updated!',
-                    'id'        => $this->advisory->id
+                    'message'   => 'Successfully updated',
+                    'id'        => $this->detail->id
                 ];
             }
             else {
@@ -127,7 +138,7 @@ class AdvisoryController extends Controller
         else {
             $return = [
                 'status'    => 'Error',
-                'message'   => 'Id not found!'
+                'message'   => 'Id not found'
             ];
         }
         return Response::json($return, 200);
@@ -141,10 +152,10 @@ class AdvisoryController extends Controller
      */
     public function destroy($id)
     {
-        if (Advisory::destroy($id)) {
+        if (UserDetail::destroy($id)) {
             $return = [
                 'status'    => 'Success',
-                'message'   => 'Successfully Deleted!',
+                'message'   => 'Successfully Deleted',
                 'id'        => $id
             ];
         }

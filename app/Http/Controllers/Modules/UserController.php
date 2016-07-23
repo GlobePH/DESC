@@ -8,16 +8,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Response;
 
-use App\Model\Core\Advisory;
+use App\Model\Core\User;
 
-class AdvisoryController extends Controller
+class UserController extends Controller
 {
 
     /**
      * 
-     * @var Object/Collection
+     * @var Collection/Object
      */
-    private $advisory;
+    private $user; 
 
     /**
      * Display a listing of the resource.
@@ -26,8 +26,8 @@ class AdvisoryController extends Controller
      */
     public function index()
     {
-        $this->advisory = Advisory::with(['cluster'])->get();
-        return Response::json($this->advisory, 200);
+        $this->user = User::with(['userDetail'])->get();
+        return Response::json($this->user, 200);
     }
 
     /**
@@ -48,18 +48,18 @@ class AdvisoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->advisory = new Advisory;
-        $this->advisory->user_id    = $request->get('user_id');
-        $this->advisory->cluster_id = $request->get('cluster_id');
-        $this->advisory->name       = $request->get('name');
-        $this->advisory->summary    = $request->get('summary');
-        $this->advisory->content    = $request->get('content');
-        $this->advisory->status     = $request->get('status');
-        if ($this->advisory->save()) {
+        $this->user = new User;
+        $this->user->user_type_id   = $request->get('user_type_id');
+        $this->user->cluster_id     = $request->get('cluster_id');
+        $this->user->email          = $request->get('email');
+        $this->user->password       = bcrypt($request->get('password'));
+        $this->user->username       = $request->get('username');
+        $this->user->status         = $request->get('status');
+        if ($this->user->save()) {
             $return = [
                 'status'    => 'Success',
-                'message'   => 'Successfully saved!',
-                'id'        => $this->advisory->id
+                'message'   => 'Successfully created',
+                'id'        => $this->user->id
             ];
         }
         else {
@@ -79,8 +79,16 @@ class AdvisoryController extends Controller
      */
     public function show($id)
     {
-        $this->advisory = Advisory::find($id);
-        return Response::json($this->advisory, 200);
+        if ($this->user = User::find($id)) {
+            $return = $this->user;
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -103,18 +111,15 @@ class AdvisoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->advisory = Advisory::find($id)) {
-            $this->advisory->user_id    = $request->get('user_id');
-            $this->advisory->cluster_id = $request->get('cluster_id');
-            $this->advisory->name       = $request->get('name');
-            $this->advisory->summary    = $request->get('summary');
-            $this->advisory->content    = $request->get('content');
-            $this->advisory->status     = $request->get('status');
-            if ($this->advisory->save()) {
+        if ($this->user = User::find($id)) {
+            $this->user->cluster_id     = $request->get('cluster_id');
+            $this->user->password       = bcrypt($request->get('password'));
+            $this->user->status         = $request->get('status');
+            if ($this->user->save()) {
                 $return = [
                     'status'    => 'Success',
-                    'message'   => 'Successfully updated!',
-                    'id'        => $this->advisory->id
+                    'message'   => 'Successfully updated',
+                    'id'        => $this->user->id
                 ];
             }
             else {
@@ -127,7 +132,7 @@ class AdvisoryController extends Controller
         else {
             $return = [
                 'status'    => 'Error',
-                'message'   => 'Id not found!'
+                'message'   => 'Id not found'
             ];
         }
         return Response::json($return, 200);
@@ -141,10 +146,10 @@ class AdvisoryController extends Controller
      */
     public function destroy($id)
     {
-        if (Advisory::destroy($id)) {
+        if (User::destroy($id)) {
             $return = [
                 'status'    => 'Success',
-                'message'   => 'Successfully Deleted!',
+                'message'   => 'Successfully Deleted',
                 'id'        => $id
             ];
         }
