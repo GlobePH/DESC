@@ -18,4 +18,6 @@ Route::get('/', function () {
 Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 	Route::resource('advisory', 'AdvisoryController');
 	Route::resource('cluster', 'ClusterController');
+	Route::resource('contact-number', 'ContactNumberController');
+	Route::resource('contact-group', 'ContactNumberGroupController');
 });

@@ -10,7 +10,7 @@ use Response;
 
 use App\Model\Core\ContactNumber;
 
-class ContactNumber extends Controller
+class ContactNumberController extends Controller
 {
     /**
      * 
@@ -49,9 +49,9 @@ class ContactNumber extends Controller
     {
         $this->contact_number = new ContactNumber;
         $this->contact_number->number       = $request->get('number');
-        $this->contact_number->group_id     = (isset($request->get('group_id')) ? $request->get('group_id') : 0);
-        $this->contact_number->custer_id    = $request->get('cluster_id');
-        $this->contact_number->status       = (isset($request->get('status')) ? $request->get('status') : 1);
+        $this->contact_number->group_id     = ($request->get('group_id') ? $request->get('group_id') : 0);
+        $this->contact_number->cluster_id    = $request->get('cluster_id');
+        $this->contact_number->status       = ($request->get('status') ? $request->get('status') : 1);
         $this->contact_number->save();
         if ($this->contact_number->save()) {
             $return = [
@@ -77,7 +77,16 @@ class ContactNumber extends Controller
      */
     public function show($id)
     {
-        //
+        if ($this->contact_number = ContactNumber::find($id)) {
+            $return = $this->contact_number;
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found!'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -100,7 +109,32 @@ class ContactNumber extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($this->contact_number = ContactNumber::find($id)) {
+            $this->contact_number->number       = $request->get('number');
+            $this->contact_number->group_id     = ($request->get('group_id') ? $request->get('group_id') : 0);
+            $this->contact_number->status       = ($request->get('status') ? $request->get('status') : 1);
+            $this->contact_number->save();
+            if ($this->contact_number->save()) {
+                $return = [
+                    'status'    => 'Success',
+                    'message'   => 'Successfully Updated!',
+                    'id'        => $this->contact_number->id
+                ];
+            }
+            else {
+                $return = [
+                    'status'    => 'Error',
+                    'message'   => 'Error in update'
+                ];
+            }
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 
     /**
@@ -111,6 +145,19 @@ class ContactNumber extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (ContactNumber::destroy($id)) {
+            $return = [
+                'status'    => 'Success',
+                'message'   => 'Successfully Deleted!',
+                'id'        => $id
+            ];
+        }
+        else {
+            $return = [
+                'status'    => 'Error',
+                'message'   => 'Id not found'
+            ];
+        }
+        return Response::json($return, 200);
     }
 }
