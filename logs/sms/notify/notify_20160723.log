@@ -5,3 +5,5 @@
 [2016-07-23 20:39:06]{"status":"SENT","rb_cost":"0.5","credits_cost":"0.5","mobile_number":"639178919829","timestamp":"1469306099.87","shortcode":"292908435","message_id":"DESCF14F7098DD22786DB1469306080","message_type":"outgoing"}
 [2016-07-23 20:41:43]{"status":"SENT","rb_cost":"0.5","credits_cost":"0.5","mobile_number":"639178919829","timestamp":"1469306099.87","shortcode":"292908435","message_id":"DESCF14F7098DD22786DB1469306080","message_type":"outgoing"}
 [2016-07-23 20:42:35]{"status":"SENT","rb_cost":"0.5","credits_cost":"0.5","mobile_number":"639178919829","timestamp":"1469306554.4","shortcode":"292908435","message_id":"DESCC31AF68C4F658319F1469306548","message_type":"outgoing"}
+[2016-07-23 21:14:16]{"status":"SENT","rb_cost":"0.5","credits_cost":"0.5","mobile_number":"639178919829","timestamp":"1469308456.12","shortcode":"292908435","message_id":"DESCE6860D91EBB81B05E1469308447","message_type":"outgoing"}
+[2016-07-23 21:15:59]{"status":"SENT","rb_cost":"0.5","credits_cost":"0.5","mobile_number":"639178919829","timestamp":"1469308558.04","shortcode":"292908435","message_id":"DESCEE5115442F95B1BE41469308548","message_type":"outgoing"}
