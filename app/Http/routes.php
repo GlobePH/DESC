@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
+	Route::resource('advisory', 'AdvisoryController');
+	Route::resource('cluster', 'ClusterController');
+});
