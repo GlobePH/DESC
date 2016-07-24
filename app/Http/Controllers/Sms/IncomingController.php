@@ -68,6 +68,7 @@ class IncomingController extends Controller
                     'time_prepared' => date('Y-m-d H:i:s'),
                     'request_id' => $request['request_id']
                 ];
+
                 unset($explodedMessage[0]);
                 $inboundMessage = implode(" ", $explodedMessage);
                 
@@ -81,10 +82,15 @@ class IncomingController extends Controller
                 ];    
                 
                 Inbound::insert($data);
+                
+                $assignedUser = Curl::to(url('api/modules/user/randomize/'.$validateCluster->id))
+                ->asJson()
+                ->get();                
+
                 Curl::to(url("api/modules/ticket"))
-                ->withData(["reference_id" => $data['reference_id'], "user_id" => 1, "cluster_id" => $validateCluster->id, "ticket_status" => 0])
+                ->withData(["reference_id" => $data['reference_id'], "user_id" => $assignedUser->id, "cluster_id" => $validateCluster->id, "ticket_status" => 0])
                 ->post();
-            
+
                 $redis = Redis::connection();
                 $redis->publish('notification.' . $validateCluster->id, $referenceID);                            
             }
