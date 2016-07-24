@@ -58,7 +58,7 @@ class UserController extends Controller
     public function assignRandom($cluster_id = 0)
     {
         $userCount = User::select('id')->where('cluster_id', '=', $cluster_id)->orderBy(DB::raw('RAND()'))->first();
-        return $userCount;
+        return Response::json($userCount, 200);
     }
 
     /**
