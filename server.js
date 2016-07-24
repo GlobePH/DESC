@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 
 var redis = require('redis');
 
-server.listen(8890);
+server.listen(8082);
 
 io.on('connection', function (socket) {
     //console.log(socket);
