@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+use App\Model\Core\User;
+
+use Auth;
+use Curl;
+use Config;
 
 class AuthController extends Controller
 {
@@ -29,6 +35,12 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+
+    /**
+     * General data of controller
+     * @var array
+     */
+    public $data;
 
     /**
      * Create a new authentication controller instance.
@@ -68,5 +80,43 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    /**
+     * Display login page
+     * @return Response
+     */
+    public function login()
+    {
+        $this->data['title']    = Config::get('constants.title');
+        return view('auth.login')->with($this->data);
+    }
+
+    /**
+     * Process submitted login credentials
+     * @return Response
+     */
+    public function processLogin(Request $request)
+    {
+        $this->data['account'] = [
+                                    'email'     => $request->get('email'),
+                                    'password'  => $request->get('password')
+                                 ];
+        if (Auth::attempt($this->data['account'])) {
+            return redirect('dashboard');
+        }
+        else {
+            return redirect('login')->withErrors('Invalid Account Credentials! Please try again!');
+        }
+    }
+
+    /**
+     * Logout and destroy user session
+     * @return Response
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('login');
     }
 }

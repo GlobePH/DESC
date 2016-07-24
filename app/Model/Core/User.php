@@ -25,11 +25,29 @@ class User extends Authenticatable
     ];
 
     /**
+     * Define relationship with single tbl.user_types record
+     * @return Collection
+     */
+    public function userType()
+    {
+        return $this->hasOne('App\Model\Core\UserType', 'id', 'user_type_id');
+    }
+
+    /**
      * Define relationship with single tbl.user_details record
      * @return Collection
      */
     public function userDetail()
     {
         return $this->hasOne('App\Model\Core\userDetail', 'user_id', 'id');
+    }
+
+    /**
+     * Define relationship with single tbl.cluster
+     * @return Collection
+     */
+    public function cluster()
+    {
+        return $this->hasOne('App\Model\Core\Cluster', 'id', 'cluster_id');
     }
 }

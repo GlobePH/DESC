@@ -26,7 +26,15 @@ class ClusterController extends Controller
      */
     public function index()
     {
-        $this->cluster = Cluster::with(['advisory', 'contactNumber', 'ticket'])->get();
+        $this->cluster = Cluster::with(['advisory', 'contactNumber', 'ticket'])->paginate(10);
+        if (isset($_GET['q'])) {
+            if ($_GET['q']) {
+                    $this->cluster = Cluster::with(['advisory', 'contactNumber', 'ticket'])
+                    ->where('name', 'LIKE', $_GET['q'].'%')
+                    ->orWhere('cluster_code', 'LIKE', $_GET['q'].'%')
+                    ->paginate(10);
+            }
+        }
         return Response::json($this->cluster, 200);
     }
 

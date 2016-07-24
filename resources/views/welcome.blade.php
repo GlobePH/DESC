@@ -40,6 +40,10 @@
             <div class="content">
                 <div class="title">Laravel 5</div>
             </div>
+
+            {!! Form::open() !!}
+
+            {!! Form::close() !!}
         </div>
     </body>
 </html>

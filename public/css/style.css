@@ -1,0 +1,36 @@
+html, body {
+	font-family: 'Roboto', sans-serif;
+	height: 100%;
+	color: #666;
+}
+
+.logo-text-container {
+	width: 200px;
+	padding: 0;
+}
+.logo-text-container .logo-text-content {
+	background: #f77b6b;
+	width: 100%;
+	color: #FFF;
+	float: left;
+	height: 101%;
+}
+.logo-text-content .logo-text {
+	font-size: 28px!important;
+	font-weight: bold;
+	margin-top: 5%!important;
+	padding-left: 10px!important;
+}
+
+.navbar-default {
+	background-color: #FFF;
+}
+
+ul#side-menu li a {
+	padding-top: 15px;
+	background-color: #333!important;
+	color: #FFF;
+}
+ul#side-menu li a:hover, ul#side-menu li a:active {
+	background-color: #404040!important;
+}

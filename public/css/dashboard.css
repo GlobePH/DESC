@@ -1,0 +1,30 @@
+
+.ticket-item {
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	box-sizing: border-box;
+}
+.ticket-item .ti-header {
+	width: 100%;
+	font-size: 12px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.ticket-item .ti-body {
+	width: 100%;
+	padding: 10px;
+	padding-top: 0px;
+	font-size: 12px;
+	margin-bottom: 15px;
+}
+.ticket-item .ti-footer {
+	background: #CCC;
+	width: 100%;
+	padding: 10px;
+}
+.ti-footer .tif-reply-area {
+	height: 45px;
+	resize: none;
+	overflow: hidden;
+}

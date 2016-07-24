@@ -11,8 +11,25 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['middleware' => ['web']], function () {
+	Route::group(['namespace' => 'Frontend'], function() {
+
+		Route::get('dashboard', 'PageController@dashboard');
+		Route::get('graphs', 'PageController@graphs');
+
+		Route::resource('advisory', 'AdvisoryController');
+		Route::resource('cluster', 'ClusterController');
+		Route::resource('account', 'UserController');
+
+	});
+
+	Route::group(['namespace' => 'Auth'], function() {
+		Route::get('login', 'AuthController@login');
+		Route::post('login', 'AuthController@processLogin');
+		Route::get('logout', 'AuthController@logout');
+	});
+
 });
 
 Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
@@ -22,6 +39,8 @@ Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 	Route::resource('contact-group', 'ContactNumberGroupController');
 	Route::resource('ticket', 'TicketController');
 	Route::resource('ticket-location', 'TicketLocationController');
+	Route::get('user/type', 'UserController@types');
+	Route::get('user/randomize/{cluster_id}', 'UserController@assignRandom');
 	Route::resource('user', 'UserController');
 	Route::resource('user-detail', 'UserDetailController');
 });

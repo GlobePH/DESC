@@ -1,0 +1,47 @@
+html, body {
+	font-family: 'Roboto', sans-serif;
+	color: #FFF;
+	background: #3d3c3c;
+}
+
+.login-container {
+    width: 100%;
+    float: left;
+    min-height: 300px;
+    margin-top: 100px;
+}
+.login-container .login-left {
+	width: 25%;
+	float: left;
+}
+.login-left .avatar-placeholder {
+	margin: 10px auto;
+	margin-top: 83px;
+	width: 80%;
+}
+.login-container .login-right {
+	width: 75%;
+	float: left;
+}
+.login-right .text-logo {
+	font-weight: bold;
+}
+.login-right .login-inner-content {
+	background: #484747;
+	float: left;
+	padding: 20px;
+	padding-top: 30px;
+	width: 100%;
+}
+.login-inner-content .txtbox {
+	border: 1px solid #3d3c3c;
+	height: 50px;
+}
+.login-inner-content .btn-custom {
+	line-height: 2.429;
+	background-color: #f77b6b;
+	border-color: #A83A2C;
+}
+.login-inner-content .btn-custom:hover {
+	color: #FFF;
+}

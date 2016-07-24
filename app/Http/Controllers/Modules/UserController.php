@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Response;
 
+use DB;
 use App\Model\Core\User;
+use App\Model\Core\UserType;
 
 class UserController extends Controller
 {
@@ -26,8 +28,37 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->user = User::with(['userDetail'])->get();
+        $this->user = User::with(['userDetail', 'cluster', 'userType'])->paginate(10);
+        if (isset($_GET['q'])) {
+            if ($_GET['q']) {
+                    $this->user = User::with(['userDetail', 'cluster', 'userType'])
+                    ->where('email', 'LIKE', $_GET['q'].'%')
+                    ->orWhere('username', 'LIKE', $_GET['q'].'%')
+                    ->paginate(10);
+            }
+        }
         return Response::json($this->user, 200);
+    }
+
+    /**
+     * Get list of user types
+     * @return Collection
+     */
+    public function types()
+    {
+        $this->user = UserType::all();
+        return Response::json($this->user, 200);
+    }
+
+    /**
+     * Retrieve random user id from the cluster id parameter
+     * @param  integer $cluster_id 
+     * @return Integer
+     */
+    public function assignRandom($cluster_id = 0)
+    {
+        $userCount = User::select('id')->where('cluster_id', '=', $cluster_id)->orderBy(DB::raw('RAND()'))->first();
+        return $userCount;
     }
 
     /**

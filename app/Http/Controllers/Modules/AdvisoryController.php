@@ -26,7 +26,38 @@ class AdvisoryController extends Controller
      */
     public function index()
     {
-        $this->advisory = Advisory::with(['cluster'])->get();
+        $this->advisory = Advisory::with(['cluster', 'user'])->paginate(10);
+        if (isset($_GET['cluster'])) {
+            if ($_GET['cluster'] > 0) {
+                if (isset($_GET['q'])) {
+                    $this->advisory = Advisory::with(['cluster', 'user'])
+                    ->where('cluster_id', '=', $_GET['cluster'])
+                    ->where('name', 'LIKE', $_GET['q'].'%')
+                    ->paginate(10);
+                }
+                else {
+                    $this->advisory = Advisory::with(['cluster', 'user'])
+                    ->where('cluster_id', '=', $_GET['cluster'])
+                    ->paginate(10);
+                }
+            }
+        }
+        if (isset($_GET['q'])) {
+            if ($_GET['q']) {
+                if ($_GET['cluster'] > 0) {
+                    $this->advisory = Advisory::with(['cluster', 'user'])
+                    ->where('cluster_id', '=', $_GET['cluster'])
+                    ->where('name', 'LIKE', $_GET['q'].'%')
+                    ->paginate(10);
+                }
+                else {
+                    $this->advisory = Advisory::with(['cluster', 'user'])
+                    ->where('name', 'LIKE', $_GET['q'].'%')
+                    ->paginate(10);
+                }
+            }
+        }
+
         return Response::json($this->advisory, 200);
     }
 
