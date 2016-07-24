@@ -11,3 +11,4 @@
 [2016-07-24 05:44:09]{"status":"SENT","rb_cost":"0.00","credits_cost":"0.5","mobile_number":"639175672580","timestamp":"1469339048.04","shortcode":"292908435","message_id":"DESCAC9F14BD8F23C59751469338470","message_type":"outgoing"}
 [2016-07-24 05:57:08]{"status":"SENT","rb_cost":"0.00","credits_cost":"0.5","mobile_number":"639175672580","timestamp":"1469339826.84","shortcode":"292908435","message_id":"DESC6A3FF4E963BA054C51469339618","message_type":"outgoing"}
 [2016-07-24 06:00:54]{"status":"SENT","rb_cost":"0.00","credits_cost":"0.5","mobile_number":"639175672580","timestamp":"1469340052.83","shortcode":"292908435","message_id":"DESC1ACB4640B30F2CE2E1469339448","message_type":"outgoing"}
+[2016-07-24 06:04:16]{"status":"SENT","rb_cost":"0.00","credits_cost":"0.5","mobile_number":"639178919829","timestamp":"1469340255.02","shortcode":"292908435","message_id":"DESC8870ABCB99091DFD51469325818","message_type":"outgoing"}

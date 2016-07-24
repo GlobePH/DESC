@@ -80,7 +80,7 @@ class AdvisoryController extends Controller
                 'reference_id' => strtoupper("DESC". substr(md5(uniqid(rand(), true)), 10, 17)) . time(),
                 'number'=> $number->number,
                 'sms_type' => 3,
-                'message' => $request->get('content'),
+                'message' => $request->get('summary'),
                 'time_prepared' => date('Y-m-d H:i:s'),
                 'request_id' => ''
             ];
