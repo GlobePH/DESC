@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Response;
 use Redis;
 use Curl;
+use DB;
 
 use App\Model\Sms\Inbound;
 
@@ -82,7 +83,6 @@ class IncomingController extends Controller
                 ];    
                 
                 Inbound::insert($data);
-                
                 $assignedUser = Curl::to(url('api/modules/user/randomize/'.$validateCluster->id))
                 ->asJson()
                 ->get();                
@@ -94,6 +94,7 @@ class IncomingController extends Controller
                 $redis = Redis::connection();
                 $redis->publish('notification.' . $validateCluster->id, $referenceID);                            
             }
+            DB::insert("INSERT IGNORE INTO contact_numbers (number, cluster_id, status, created_at) VALUES (?, ?, ?, ?)", [$request['mobile_number'], $validateCluster->id, 1, date('Y-m-d H:i:s')]);
         }
         
         Queue::queue($dataQueue);
