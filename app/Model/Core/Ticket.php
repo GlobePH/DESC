@@ -16,4 +16,13 @@ class Ticket extends Model
 		return $this->belongsTo('App\Model\Core\Cluster', 'cluster_id', 'id');
 	}
 
+	/**
+	 * Define relationship to tbl.inbound
+	 * @return Collection
+	 */
+	public function inbound()
+	{
+		return $this->belongsTo('App\Model\Sms\Inbound', 'reference_id', 'reference_id');
+	}
+
 }

@@ -22,7 +22,7 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void">
                     <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                 </a>
-                <ul class="dropdown-menu dropdown-alerts">
+                <!-- <ul class="dropdown-menu dropdown-alerts">
                     <li><a href="#">
                             <div>
                                 <i class="fa fa-comment fa-fw"></i> New Comment
@@ -74,8 +74,8 @@
                         </a>
                     </li>
                 </ul>
-                <!-- /.dropdown-alerts -->
-            </li>
+                <!-- /.dropdown-alerts 
+            </li> -->
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void">
@@ -97,14 +97,14 @@
                         <i class="fa fa-dashboard fa-2x fa-fw"></i><br />
                         Dashboard
                     </a></li>
-                    <li><a href="{{ url('graphs') }}" class="text-center">
+                    <!-- <li><a href="{{ url('graphs') }}" class="text-center">
                         <i class="fa fa-bar-chart fa-2x fa-fw"></i><br />
                         Graphs
                     </a></li>
                     <li><a href="{{ url('history') }}" class="text-center">
                         <i class="fa fa-history fa-2x fa-fw"></i><br />
                         History
-                    </a></li>
+                    </a></li> -->
                     <li><a href="{{ url('cluster') }}" class="text-center">
                         <i class="fa fa-cubes fa-2x fa-fw"></i><br />
                         Cluster

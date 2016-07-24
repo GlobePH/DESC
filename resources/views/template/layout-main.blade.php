@@ -23,6 +23,8 @@
         <script type="text/javascript" src="{{ asset('sb-admin/js/sb-admin-2.js') }}"></script>
         <link href="{{ asset('sb-admin/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
         <script type="text/javascript" src="{{ asset('sb-admin/metisMenu/dist/metisMenu.min.css') }}"></script>
+
+        {{-- Web Socket --}}
     @endif
     {{-- Google Font --}}
     <link href='https://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>

@@ -26,7 +26,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $this->ticket = Ticket::all();
+        $this->ticket = Ticket::with(['inbound', 'cluster'])->where('ticket_status', '=', 0)->orderBy('id', 'desc')->get();
         return Response::json($this->ticket, 200);
     }
 
@@ -77,7 +77,7 @@ class TicketController extends Controller
      */
     public function show($id)
     {
-        if ($this->ticket = Ticket::find($id)) {
+        if ($this->ticket = Ticket::with(['inbound', 'cluster'])->find($id)) {
             $return = $this->ticket;
         }
         else {
@@ -85,6 +85,20 @@ class TicketController extends Controller
                 'status'    => 'Error',
                 'message'   => 'Id not found'
             ];
+        }
+        return Response::json($return, 200);
+    }
+
+    /**
+     * Display ticket by reference number
+     * @param  string $ref_num [description]
+     * @return [type]          [description]
+     */
+    public function showByReferenceNumber($ref_num = '')
+    {
+        $this->ticket = Ticket::with(['inbound', 'cluster'])->where('reference_id', '=', $ref_num)->first();
+        if ($this->ticket) {
+            $return = $this->ticket;
         }
         return Response::json($return, 200);
     }

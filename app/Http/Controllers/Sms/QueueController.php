@@ -19,7 +19,7 @@ class QueueController extends Controller
     
     public static function addToQueue(Request $request)
     {
-        Queue::insert($data);
+        Queue::insert($request->all());
     }    
     
 }

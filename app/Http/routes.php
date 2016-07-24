@@ -16,6 +16,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::group(['namespace' => 'Frontend'], function() {
 
 		Route::get('dashboard', 'PageController@dashboard');
+		Route::post('close-ticket', 'PageController@closeTicket');
 		Route::get('graphs', 'PageController@graphs');
 
 		Route::resource('advisory', 'AdvisoryController');
@@ -37,6 +38,7 @@ Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 	Route::resource('cluster', 'ClusterController');
 	Route::resource('contact-number', 'ContactNumberController');
 	Route::resource('contact-group', 'ContactNumberGroupController');
+	Route::get('ticket/reference/{ref_num}', 'TicketController@showByReferenceNumber');
 	Route::resource('ticket', 'TicketController');
 	Route::resource('ticket-location', 'TicketLocationController');
 	Route::get('user/type', 'UserController@types');
