@@ -14,6 +14,9 @@ use Curl;
 use Config;
 use Session;
 
+use App\Model\Core\ContactNumber;
+use App\Http\Controllers\Sms\QueueController as Queue;
+
 class AdvisoryController extends Controller
 {
     /**
@@ -70,6 +73,20 @@ class AdvisoryController extends Controller
             'status'    => 1
         ];
         $response = Curl::to(url('api/modules/advisory'))->withData($this->data['advisory'])->asJson(true)->post();
+        $numbers = ContactNumber::where('cluster_id', $request->get('cluster'))->get();
+        foreach($numbers as $number){
+            $dataQueue = [
+                'cluster_id' => $request->get('cluster'),
+                'reference_id' => strtoupper("DESC". substr(md5(uniqid(rand(), true)), 10, 17)) . time(),
+                'number'=> $number->number,
+                'sms_type' => 3,
+                'message' => $request->get('content'),
+                'time_prepared' => date('Y-m-d H:i:s'),
+                'request_id' => ''
+            ];
+            Queue::queue($dataQueue);
+        }
+        
         if ($response['status'] == 'Success') {
             return redirect('advisory')->with('message', 'Advisory '.$response['message']);
         }
