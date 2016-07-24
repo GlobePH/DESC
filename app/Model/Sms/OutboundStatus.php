@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class OutboundStatus extends Model
 {
     protected $table = 'outbound_status';
-    publics $timestamps = false;
+    public $timestamps = false;
     protected $fillable = [
-        'cluster_id', 'reference_id', 'status_code', 'status_message', 'time_notified'
+        'cluster_id', 'reference_id', 'status_code', 'status_message', 'time_notified', 'status_description'
     ];
 }

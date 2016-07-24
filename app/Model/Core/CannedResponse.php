@@ -8,6 +8,6 @@ class CannedResponse extends Model
 {
     protected $table = 'canned_response';
     protected $fillable = [
-        'response_id', 'message'
+        'response_id', 'message', 'cluster_id', 'info_code'
     ];
 }

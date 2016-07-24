@@ -48,5 +48,15 @@ Route::group(['prefix' => 'api/modules', 'namespace' => 'Modules'], function() {
 Route::group(['prefix' => 'api/sms', 'namespace' => 'Sms'], function() {
 	Route::group(['prefix' => 'inbound'], function(){
 		Route::post('', 'IncomingController@inbound');			
+		Route::get('{id}', 'IncomingController@find');
+	});
+	Route::group(['prefix' => 'outbound'], function(){
+	});
+	Route::group(['prefix' => 'notify'], function(){
+		Route::post('', 'StatusController@status');
+		Route::post('manual', 'StatusController@manual');
+	});
+	Route::group(['prefix' => 'queue'], function(){
+		Route::post('', 'QueueController@addToQueue');
 	});
 });
