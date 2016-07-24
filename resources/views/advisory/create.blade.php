@@ -24,6 +24,9 @@
 						</div>
 					@endif
     				{!! Form::open(array('route' => 'advisory.store')) !!}
+    					<div class="alert alert-info">
+    						<i class="fa fa-info-circle"></i> Publishing this advisory will automatically send and sms advisory to all mobile numbers that have originated using the selected cluster code.
+    					</div>
     					<div class="form-group">
     						<label>Advisory Title</label>
 							<input type="text" class="form-control" name="name" placeholder="Title" />

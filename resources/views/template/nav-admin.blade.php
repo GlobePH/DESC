@@ -18,10 +18,10 @@
 
         <ul class="nav navbar-top-links navbar-right">
             <!-- /.dropdown -->
-            <li class="dropdown">
+            <!-- <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void">
                     <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
+                </a> -->
                 <!-- <ul class="dropdown-menu dropdown-alerts">
                     <li><a href="#">
                             <div>
